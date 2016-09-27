@@ -42,9 +42,13 @@ public class DraftSelection extends Application {
     final Button buttonSubmit = new Button ("Submit Pick");
     final Button buttonCancel = new Button ("Cancel Last Pick");
     final Label select = new Label ();
+    final ImageView imageHelmet = new ImageView();
+      int click = 0;  
     
+    /*  Players: "Ben", "Bob", "Bill", "Jon", "Linda/Mike", "Porkchop", "Steve", "Pat", "Sandwich", "Jim", "Kevin", "Ron", "Paul", "Stymie", "Tyler"
+        160 total picks
     
-    
+    */
     
     String category = " ";
     String team = " ";
@@ -62,13 +66,13 @@ public class DraftSelection extends Application {
         final Label player = new Label ("PORKCHOP");
             player.setId("playerText");        
         
-        final ImageView imageHelmet = new ImageView(new Image(DraftSelection.class.getResourceAsStream("graphics/helmetlogo/packers.png")));
-            imageHelmet.setFitHeight(219);
-            imageHelmet.setFitWidth(232);    
+        imageHelmet.setImage(new Image(DraftSelection.class.getResourceAsStream("graphics/draft.jpg")));
+                            
             
-        final ImageView imageDraft = new ImageView(new Image(DraftSelection.class.getResourceAsStream("graphics/draft.jpg")));
+        final Label roundNumber = new Label ();
+            roundNumber.setId("playerText");  
+            roundNumber.setText("1");
             
-            //grid.add(new ImageView(new Image(DraftSelection.class.getResourceAsStream("graphics/large-logo.png"))), 0, 0);
             
         final ComboBox teamBox = new ComboBox();
                 teamBox.getItems().addAll(
@@ -86,6 +90,8 @@ public class DraftSelection extends Application {
                     @Override public void changed(ObservableValue ov, String t, String t1) {
                         team = t1;                
                     }    
+                    
+                    
                 });
                 
         final ComboBox categoryBox = new ComboBox();
@@ -101,11 +107,7 @@ public class DraftSelection extends Application {
                     }    
                 });
                 
-                //categoryBox.valueProperty().addListener(new ChangeListener<ImageView>() {
-                //    @Override public void changed(ObservableValue ov, ImageView t, ImageView t1) {
-               //         imageHelmet = t1;                
-                //    }    
-                //});
+                
                 
                 Button btnSubmit = new Button("Submit Pick");
                     btnSubmit.setMaxWidth(Double.MAX_VALUE);
@@ -114,27 +116,38 @@ public class DraftSelection extends Application {
                     btnCancel.setMaxWidth(Double.MAX_VALUE);
             
                 btnSubmit.addEventHandler(ActionEvent.ACTION, (e)-> {
-                      teamSelection.setText(team);   
-                      categorySelection.setText(category);
-                      select.setText("Selects");
-                      noTeam.setText("");
-                      
-                      if(teamBox.getValue() == null || categoryBox.getValue() == null){
+                    
+                    if(teamBox.getValue() == null || categoryBox.getValue() == null){
                       noTeam.setText("Please Select Team & Category");
                       teamSelection.setText(""); 
                       categorySelection.setText("");
                       select.setText("");
-                      }
+                      imageHelmet.setImage(null);
+                      
+                      
+                      } else {
+                      teamSelection.setText(team);   
+                      categorySelection.setText(category);
+                      select.setText("Selects");
+                      imageHelmet.setImage(new Image(DraftSelection.class.getResourceAsStream("graphics/helmetlogo/" + team + ".png")));
+                            imageHelmet.setFitHeight(219);
+                            imageHelmet.setFitWidth(232);   
+                        click++;
+                        roundNumber.setText("" + click);
+                      noTeam.setText("");
+                      
+                         } 
                       
                       teamBox.setValue(null);   
                       categoryBox.setValue(null); 
-                      
+                    
                  });
             
                 btnCancel.addEventHandler(ActionEvent.ACTION, (e)-> {
                       teamSelection.setText(""); 
                       categorySelection.setText("");
                       select.setText("");
+                      imageHelmet.setImage(null);
                 });
                 
         
@@ -149,8 +162,7 @@ public class DraftSelection extends Application {
                   
         
             
-        final Label roundNumber = new Label ("15");
-            roundNumber.setId("playerText");  
+        
             
         
             
@@ -202,7 +214,7 @@ public class DraftSelection extends Application {
                 
         grid.add(new ImageView(new Image(DraftSelection.class.getResourceAsStream("graphics/large-logo.png"))), 0, 0);
         grid.add(imageHelmet, 3, 2, 2, 5);
-        //grid.add(imageDraft, 3, 2, 2, 5);
+        
         grid.add(onClock, 1, 0, 3, 1);
         grid.add(player, 4, 0, 2, 1);
         grid.add(teamBox, 0, 2, 2, 1);
